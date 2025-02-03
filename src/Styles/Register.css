@@ -1,0 +1,124 @@
+
+/* Apply background color to the entire page */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  background: linear-gradient(to right, #1e3c72, #2a5298); /* Gradient background for entire page */
+}
+
+/* Register container */
+.register {
+  max-width: 400px; /* Max width for the form */
+  margin: 50px auto; /* Centered horizontally */
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f4f8; /* Light grey/blue color for inner container */
+  color: #333; /* Text color */
+}
+
+/* Title */
+.register h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1e3c72; /* Matching color for the heading */
+}
+
+/* Form styles */
+.register form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%; /* Ensure form takes the full width of the parent */
+}
+
+/* Input field styles */
+.register input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%; /* Make inputs take full width on smaller screens */
+  box-sizing: border-box; /* Ensure padding does not exceed width */
+}
+
+/* Button styling */
+.register button {
+  padding: 10px;
+  background-color: #2a5298; /* Darker blue for button */
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%; /* Ensure button is full width */
+}
+
+.register button:hover {
+  background-color: #1e3c72; /* Darker blue hover effect */
+}
+
+/* Error message styling */
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+  text-align: left; /* Align the error message left */
+}
+
+/* Success message styling */
+.success {
+  color: green;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+  .register {
+    max-width: 90%; /* Allow the form to take up more space on smaller screens */
+    margin: 20px auto; /* Reduce margin on smaller screens */
+  }
+
+  /* Adjust font size and padding for input fields on smaller screens */
+  .register input {
+    padding: 12px;
+    font-size: 14px; /* Slightly smaller font size */
+  }
+
+  /* Adjust button size */
+  .register button {
+    padding: 12px;
+    font-size: 14px; /* Smaller button font size */
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further adjustments for very small screens (e.g., mobile phones) */
+  .register {
+    max-width: 95%; /* Make the form nearly full width */
+    padding: 15px; /* Slightly reduced padding */
+  }
+
+  .register input {
+    padding: 12px;
+    font-size: 14px; /* Adjust font size for better readability */
+  }
+
+  .register button {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .register h2 {
+    font-size: 1.5rem; /* Adjust heading size for smaller screens */
+  }
+}

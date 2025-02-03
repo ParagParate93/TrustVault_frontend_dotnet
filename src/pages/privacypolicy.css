@@ -1,0 +1,89 @@
+.privacy-policy-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to bottom right, #1e3c72, #2a5298);
+    color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+  
+  .privacy-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  
+  .effective-date {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #d1e7ff;
+  }
+  
+  .section {
+    margin-bottom: 30px;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+  }
+  
+  h2 {
+    font-size: 1.8rem;
+    color: #f9c74f;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #f9c74f;
+    display: inline-block;
+    padding-bottom: 5px;
+  }
+  
+  ul {
+    list-style-type: disc;
+    margin: 15px 0 0 25px;
+    font-size: 1.1rem;
+  }
+  
+  li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+  
+  a {
+    color: #f9c74f;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  a:hover {
+    color: #f9844a;
+    text-decoration: underline;
+    transition: color 0.3s;
+  }
+  
+  main {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

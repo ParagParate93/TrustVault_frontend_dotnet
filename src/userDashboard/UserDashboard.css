@@ -1,0 +1,330 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.user-dashboard-container {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.user-dashboard-header {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  margin: 20px;
+}
+
+.user-dashboard-header h1 {
+  font-size: 3rem;
+  margin: 20px 0;
+}
+
+.user-dashboard-header p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.logo {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+.user-dashboard-main {
+  text-align: center;
+  padding: 40px 20px;
+  flex-grow: 1;
+}
+
+.user-dashboard-upload-section {
+  margin-bottom: 30px;
+}
+
+.upload-button {
+  display: inline-flex;
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upload-button:hover {
+  background-color: #0056b3;
+}
+
+.upload-button input {
+  display: none;
+}
+
+.upload-button span {
+  margin-left: 10px;
+}
+
+.user-dashboard-sort-search .search-sort-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sort-button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.sort-button:hover {
+  background-color: #0056b3;
+}
+
+.search-input-container {
+  position: relative;
+}
+
+.search-inputz {
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  width: 70%;
+  margin-right: 100px;
+  margin-left: 126px;
+}
+
+.search-icon {
+  position: absolute;
+  
+  top: 57%;
+  transform: translateY(-50%);
+  color: #007bff;
+}
+
+.user-dashboard-file-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.user-dashboard-file-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+}
+
+.file-info p {
+  margin-left: 10px;
+}
+
+.file-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.preview-button,
+.delete-button
+
+{
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.share-button
+{
+  padding: 10px;
+  background-color: white;
+  color: black;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 5px;
+}
+.preview-button:hover,
+.delete-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-button {
+  background-color: #d32f2f;
+  margin-left: 7px;
+}
+
+.delete-button:hover {
+  background-color: #c62828;
+}
+
+.user-dashboard-footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.6);
+  margin-top: auto;
+  border-radius: 8px;
+}
+.file-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  color: white;
+}
+
+.file-table th,
+.file-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  color: white;
+}
+
+.file-table th {
+  background-color: #2a5298;
+}
+
+.file-table tr:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.file-table td {
+  font-size: 0.9rem;
+}
+
+.file-table td button {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+.search-sort-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+
+
+
+
+
+/* 
+ .user-dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #1e3c72; 
+  color: white;
+}  */
+
+.logo-container {
+  width: 120px; /* Adjust logo size */
+}
+
+.logo {
+  width: 100%; /* Make logo responsive */
+  max-width: 120px; /* Adjust max-width */
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin-left: 20px;
+}
+
+.popup-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.popup-cancel-button {
+  background-color: #f44336 !important; /* Bright red for cancel button */
+  color: white !important;
+}
+.popup-share-button {
+background-color: #4CAF50 !important; /* Green for share button */
+color: white !important;
+}
+
+.popup-cancel-button {
+  background-color: rgba(211, 47, 47, 0.8);
+  color: white;
+}
+
+.popup-cancel-button:hover {
+  background-color: rgba(198, 40, 40, 0.9);
+}
+
+.popup-share-button {
+  background-color: rgba(0, 123, 255, 0.8);
+  color: white;
+}
+
+.popup-share-button:hover {
+  background-color: rgba(0, 86, 179, 0.9);
+}
+
+.MuiDialog-paper {
+  border-radius: 12px !important;
+  background-color: white !important; /* Set background to white */
+  max-width: 600px !important; /* Increase the width */
+  width: 80% !important; /* Optional: Control width as a percentage of the viewport */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Optional: Add subtle shadow */
+}
+
+.MuiDialogContent-root {
+  padding: 20px 24px !important; /* Add more padding for spacing */
+  color: black; /* Set text color for visibility */
+  font-size: 1rem; /* Adjust font size for readability */
+}
+
+.MuiDialogTitle-root {
+  background: white !important; /* Match header with popup background */
+  color: black !important; /* Set text color for visibility */
+  font-size: 1.5rem; /* Adjust font size if needed */
+  padding: 20px 24px; /* Add padding for better spacing */
+  text-align: center;
+  border-radius: 12px 12px 0 0; /* Keep rounded corners for the header */
+  font-weight: bold; /* Enhance header text */
+}
+
+.MuiDialogActions-root {
+  justify-content: center;
+  padding: 20px !important; /* Add padding for spacing */
+}

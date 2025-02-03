@@ -1,0 +1,113 @@
+/* Main About Us Container */
+.about-us-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f4f4f9;
+  padding: 60px;
+  min-height: 100vh;
+}
+
+/* Title Styles */
+.about-us-title {
+  font-size: 3rem;
+  color: #fff; /* White color for title */
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Content Section */
+.about-us-content {
+  width: 100%;
+  max-width: 900px;
+  font-size: 1.2rem;
+  color: #fff; /* White color for content */
+  line-height: 1.8;
+  margin-bottom: 40px;
+  text-align: center;
+  padding: 0 20px;
+}
+
+/* Team Section */
+.team-section {
+  text-align: center;
+}
+
+.team-section h2 {
+  font-size: 2.5rem;
+  color: #fff; /* White color for team heading */
+  margin-bottom: 30px;
+}
+
+.team-members {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* Team Member Styling */
+.team-member {
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.team-member img {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  margin-bottom: 15px;
+  border: 5px solid #fff; /* White border for images */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.team-member p {
+  font-size: 1.1rem;
+  color: #fff; /* White color for team member names */
+  font-weight: 600;
+}
+
+/* About Section Background */
+.about-us-container {
+  background: #1E3D74;
+  padding: 50px 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Content and Team Section Padding */
+.about-us-content,
+.team-section {
+  margin-top: 30px;
+  padding: 0 15px;
+  width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .about-us-container {
+    padding: 40px 20px;
+  }
+
+  .about-us-title {
+    font-size: 2.5rem;
+  }
+
+  .about-us-content {
+    font-size: 1rem;
+  }
+
+  .team-members {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .team-member {
+    margin-bottom: 30px;
+  }
+}

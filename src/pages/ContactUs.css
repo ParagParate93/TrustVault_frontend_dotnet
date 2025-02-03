@@ -1,0 +1,155 @@
+/* Root Theme Variables */
+:root {
+  --primary-color: #4e54c8;
+  --secondary-color: #8f94fb;
+  --text-color: #ffffff;
+  --input-bg: rgba(255, 255, 255, 0.1);
+  --input-border: rgba(255, 255, 255, 0.3);
+  --button-bg: #ff6584;
+  --button-hover: #ff4c6a;
+  --contact-bg: #2c3e50;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Ensure Page Does Not Interfere with Navbar */
+.fancy-contact-us-container {
+  margin-top: 80px; /* Adjust based on your navbar height */
+  padding: 40px;
+  background-color: var(--contact-bg);
+  width: 100%;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px var(--shadow-color);
+  text-align: center;
+}
+
+/* Title and Subtitle */
+.fancy-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.fancy-subtitle {
+  font-size: 18px;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+/* Form Styling */
+.fancy-form-container {
+  margin-bottom: 30px;
+}
+
+.fancy-form-field {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.fancy-input,
+.fancy-textarea {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border: 2px solid var(--input-border);
+  border-radius: 10px;
+  background-color: var(--input-bg);
+  color: var(--text-color);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.fancy-input:focus,
+.fancy-textarea:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 10px var(--secondary-color);
+}
+
+.fancy-label {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: var(--text-color);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.fancy-input:focus + .fancy-label,
+.fancy-textarea:focus + .fancy-label,
+.fancy-input:not(:placeholder-shown) + .fancy-label,
+.fancy-textarea:not(:placeholder-shown) + .fancy-label {
+  top: -10px;
+  left: 10px;
+  font-size: 14px;
+  color: var(--secondary-color);
+}
+
+/* Submit Button */
+.fancy-submit-button {
+  background-color: var(--button-bg);
+  color: var(--text-color);
+  padding: 15px 30px;
+  border: none;
+  border-radius: 25px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+.fancy-submit-button:hover {
+  background-color: var(--button-hover);
+  box-shadow: 0 8px 20px var(--shadow-color);
+}
+
+/* Contact Toggle Button */
+.fancy-contact-toggle {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 25px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.fancy-contact-toggle:hover {
+  background-color: var(--primary-color);
+}
+
+/* Contact Info Section */
+.fancy-contact-info {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: var(--input-bg);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+.fancy-contact-info h2 {
+  margin-bottom: 10px;
+}
+
+.fancy-contact-info p {
+  font-size: 16px;
+}
+
+.fancy-contact-info span {
+  font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .fancy-contact-us-container {
+    padding: 20px;
+  }
+
+  .fancy-submit-button {
+    width: 100%;
+  }
+}
