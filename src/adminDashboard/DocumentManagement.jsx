@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles.css";
+import NavigationBar2 from "../components/NavigationBar2";
 
 function DocumentManagement() {
   const [documents, setDocuments] = useState([]);
@@ -97,6 +98,8 @@ function DocumentManagement() {
   
   
   return (
+    <div className="user-dashboard-container">
+      <NavigationBar2 />
     <div className="container">
       <h2>Document Management</h2>
 
@@ -107,14 +110,14 @@ function DocumentManagement() {
         <input
           type="text"
           className="form-control search-input"
-          placeholder="Search by title or description"
+          placeholder="Search by title"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
      
-      <div className="new-document-form">
+      {/* <div className="new-document-form">
         <h3>Create a New Document</h3>
         <input
           type="text"
@@ -132,7 +135,7 @@ function DocumentManagement() {
         <button className="btn btn-primary" onClick={handleCreateDocument}>
           Create Document
         </button>
-      </div>
+      </div> */}
 
       {/* Table of documents */}
       <table className="table table-bordered">
@@ -197,12 +200,12 @@ function DocumentManagement() {
                     </>
                   ) : (
                     <>
-                      <button
+                      {/* <button
                         className="btn btn-warning"
                         onClick={() => handleEditClick(index)}
                       >
                         Edit
-                      </button>
+                      </button> */}
                       <button
                         className="btn btn-danger"
                         onClick={() => handleDeleteDocument(index)}
@@ -223,6 +226,7 @@ function DocumentManagement() {
           )}
         </tbody>
       </table>
+    </div>
     </div>
   );
 }

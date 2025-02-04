@@ -44,12 +44,12 @@ const Login = () => {
       if (response.data) {
         setErrorMessage("");
         
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('name', response.data.name);
-        localStorage.setItem('email', response.data.email);
-        localStorage.setItem('phone', response.data.phone);
-        localStorage.setItem('role', response.data.role);  
-        setLoginData({ ...loginData, role: response.data.role }); 
+        localStorage.setItem('token', response.data.response1.token);
+        localStorage.setItem('name', response.data.response1.name);
+        localStorage.setItem('email', response.data.response1.email);
+        localStorage.setItem('phone', response.data.response1.phone);
+        localStorage.setItem('role', response.data.response1.role);  
+        setLoginData({ ...loginData, role: response.data.response1.role }); 
         
         toast.success("Login Successful! OTP sent to your email.");
         setIsOtpSent(true); 
