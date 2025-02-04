@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles.css";
+import NavigationBar2 from "../components/NavigationBar2";
 
 function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -69,109 +70,115 @@ function UserManagement() {
   });
 
   return (
-    <div className="container">
-      <h2>User Management</h2>
+    <div className="user-dashboard-container">
+      <NavigationBar2 />
+      <div className="container">
+        <h2>User Management</h2>
 
-      {editingId !== null && (
-        <div className="mb-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="name"
-            value={newUser.name || ""} // ****** Ensured controlled component behavior ********
-            onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-          />
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Email"
-            value={newUser.email || ""} // ****** Ensured controlled component behavior ********
-            onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-          />
-          <input
+        {editingId !== null && (
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="name"
+              value={newUser.name || ""} // ****** Ensured controlled component behavior ********
+              onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+            />
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Email"
+              value={newUser.email || ""} // ****** Ensured controlled component behavior ********
+              onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+              disabled
+            />
+            {/* <input
             type="password"
             className="form-control"
             placeholder="Password"
             value={newUser.password || ""} // ****** Ensured controlled component behavior ********
             onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
-          />
-          <input
-            type="phone"
-            className="form-control"
-            placeholder="Phone"
-            value={newUser.phone || ""} // ****** Ensured controlled component behavior ********
-            onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
-          />
+          /> */}
+            <input
+              type="phone"
+              className="form-control"
+              placeholder="Phone"
+              value={newUser.phone || ""} // ****** Ensured controlled component behavior ********
+              onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
+            />
+            <select
+              className="form-control"
+              value={newUser.role || ""} // ****** Ensured controlled component behavior ********
+              onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+            >
+              <option value="">Select Role</option>
+              <option value="ROLE_USER">ROLE_USER</option>
+              <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+            </select>
+            <button className="btn btn-success" onClick={handleUpdateUser}>
+              Update User
+            </button>
+          </div>
+        )}
+
+        <div className="mb-3">
           <input
             type="text"
-            className="form-control"
-            placeholder="Role"
-            value={newUser.role || ""} // ****** Ensured controlled component behavior ********
-            onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+            className="form-control search-input"
+            placeholder="Search by name, email, or role"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button className="btn btn-success" onClick={handleUpdateUser}>
-            Update User
-          </button>
         </div>
-      )}
 
-      <div className="mb-3">
-        <input
-          type="text"
-          className="form-control search-input"
-          placeholder="Search by name, email, or role"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
-      <table className="table table-bordered">
-        <thead className="table-dark">
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Password</th>
-            <th>Phone</th>
-            <th>Role</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredUsers.length > 0 ? (
-            filteredUsers.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.password}</td>
-                <td>{user.phone}</td>
-                <td>{user.role}</td>
-                <td>
-                  <button
-                    className="btn btn-warning"
-                    onClick={() => handleEditUser(user.id)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDeleteUser(user.id)}
-                  >
-                    Delete
-                  </button>
+        <table className="table table-bordered">
+          <thead className="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Password</th>
+              <th>Phone</th>
+              <th>Role</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.password}</td>
+                  <td>{user.phone}</td>
+                  <td>{user.role}</td>
+                  <td>
+                    <button
+                      className="btn btn-warning"
+                      onClick={() => handleEditUser(user.id)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDeleteUser(user.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="text-center">
+                  No users found
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="5" className="text-center">
-                No users found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -29,11 +29,10 @@ const UserDashboard = () => {
   const [selectedDocumentName, setSelectedDocumentName] = useState("");
   //  var name = "Ashwini Patil";
   //  var useremail = "patilash8698@gmail.com";
-  var name = "Pramod Patil";
-var useremail = "patilpramod95@gmail.com";
-  // var name = "Rohit Owal";
-  // var useremail = "owalrohit03@gmail.com";
   // Fetch documents from the database on component mount
+  var name = localStorage.getItem('name');
+  var useremail = localStorage.getItem('email');
+
   useEffect(() => {
     fetchDocuments();
   }, []);
