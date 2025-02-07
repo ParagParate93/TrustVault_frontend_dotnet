@@ -51,7 +51,7 @@ const Login = () => {
         localStorage.setItem('role', response.data.response1.role);  
         setLoginData({ ...loginData, role: response.data.response1.role }); 
         
-        toast.success("Login Successful! OTP sent to your email.");
+        toast.success("OTP sent to your email.");
         setIsOtpSent(true); 
 
         
@@ -83,6 +83,8 @@ const Login = () => {
       if (response.data.success) {
         setIsOtpVerified(true);
         toast.success("OTP Verified Successfully!");
+
+        localStorage.setItem("loggedIn", true); 
 
         setTimeout(() => {
           if (response.data.role === "ROLE_ADMIN") {
