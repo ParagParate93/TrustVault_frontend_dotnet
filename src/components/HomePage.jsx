@@ -13,6 +13,7 @@ import trustVaultImage3 from '../assets/trustVaultImage3.jpg'; // Third image fo
 import NavigationBar from './NavigationBar';
 
 import { Carousel } from 'react-bootstrap';
+import { colors } from '@mui/material';
 
 const HomePage = () => {
   return (
@@ -115,7 +116,7 @@ const HomePage = () => {
 
         {/* Call-to-Action Section */}
         <section className="cta-section">
-          <p>Ready to experience secure document sharing?</p>
+        <p className='tgl'>Ready to experience secure document sharing?</p>
           <div className="cta-buttons">
             <Link to="/signup" className="btn btn-signup">
               Sign Up

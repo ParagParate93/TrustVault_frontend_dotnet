@@ -19,13 +19,14 @@ const NavigationBar2 = () => {
   }, []);
 
   const handleLogout = () => {
+    console.log("Logging out...");
     localStorage.removeItem("token"); // Remove token after logout
     localStorage.removeItem("email"); // Remove email after logout
     localStorage.removeItem("name");
     localStorage.removeItem("phone");
     localStorage.removeItem("role");
-    setIsLoggedIn(false);
-    navigate("/login");
+    localStorage.setItem("loggedIn", false);
+    navigate("/login", {replace: "true"});
   };
 
   const toggleDropdown = () => {

@@ -21,6 +21,7 @@ import NavigationBar2 from "./components/NavigationBar2.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
 import PrivacyPolicy from "./pages/privacypolicy.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const withNavBar = (Component) => (
   <>
@@ -33,25 +34,29 @@ const withNavBar = (Component) => (
 
 
 const App = () => {
+  const isLoggedIn = localStorage.getItem("loggedIn");
+  const userType = localStorage.getItem("role");
   return (
     <Router>
       <Routes>
 
-        <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={withNavBar(Register)} />
         <Route path="/login" element={withNavBar(Login)} />
         <Route path="/forgot-password" element={withNavBar(ForgotPassword)} />
+        <Route path="/contact"element={<><ContactUs/> </>}/>
+        <Route path="/PrivacyPolicy"element={<><PrivacyPolicy/> </>} />
         <Route path="/about" element={withNavBar(About)} />
-       
-        <Route path="/UserDashboard"element={<> {/* Include Navbar here */}<UserDashboard /> </>}     />
-        <Route path="/DocumentManagement"element={<> {/* Include Navbar here */}<DocumentManagement /> </>}     />
-        <Route path="/UserManagement"element={<> {/* Include Navbar here */}<UserManagement/> </>}     />
-        <Route path="/AdminDashboard"element={<> {/* Include Navbar here */}<Dashboard/> </>}     />
-
-        <Route path="/NavigationBar2"element={<><NavigationBar2/> </>}     />
-        <Route path="/contact"element={<><ContactUs/> </>}     />
-        <Route path="/PrivacyPolicy"element={<><PrivacyPolicy/> </>}     />
+        
+        {/* ProtectedRoutes */}
+        <Route element={<ProtectedRoute/>}>
+        <Route path="/UserDashboard"element={<> <UserDashboard /> </>}     />
+        <Route path="/DocumentManagement"element={<><DocumentManagement /> </>}     />
+        <Route path="/UserManagement"element={<> <UserManagement/> </>}     />
+        <Route path="/AdminDashboard"element={<> <Dashboard/> </>}     />
+        <Route path="/NavigationBar2"element={<><NavigationBar2/> </>} />     
         <Route path="/ProfilePage"element={<><ProfilePage/> </>}     />
+        </Route>
 
       </Routes>
       
