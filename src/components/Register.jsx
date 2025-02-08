@@ -11,6 +11,7 @@ const Register = () => {
     confirmPassword: "",
     phone: "",
     role: "ROLE_USER", // Role is now included here
+    
   });
 
   const [errors, setErrors] = useState({});
