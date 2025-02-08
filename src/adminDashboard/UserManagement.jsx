@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles.css";
 import NavigationBar2 from "../components/NavigationBar2";
+import { toast } from "react-toastify";
 
 function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -16,8 +17,15 @@ function UserManagement() {
   }, []);
 
   const fetchUsers = async () => {
+    const authtoken = localStorage.getItem("token");
     try {
-      const response = await axios.get("http://localhost:8080/create/getalluser");
+      const response = await axios.get("http://localhost:8080/create/getalluser",
+        { 
+          headers: { 
+            "Authorization": `Bearer ${authtoken}` 
+          } 
+        }
+      );
       setUsers(response.data);
     } catch (error) {
       console.error("There was an error fetching the users!", error);
@@ -25,8 +33,15 @@ function UserManagement() {
   };
 
   const handleDeleteUser = async (id) => {
+    const authtoken = localStorage.getItem("token");
     try {
-      await axios.delete(`http://localhost:8080/create/delete/${id}`);
+      await axios.delete(`http://localhost:8080/create/delete/${id}`,
+        { 
+          headers: {
+            "Authorization": `Bearer ${authtoken}`
+          }
+        }
+      );
       setUsers(users.filter((user) => user.id !== id));
     } catch (error) {
       console.error("There was an error deleting the user!", error);
@@ -40,23 +55,47 @@ function UserManagement() {
   };
 
   const handleUpdateUser = async () => {
-    if (newUser.name && newUser.email && newUser.password && newUser.phone && newUser.role) { // *********** Added validation ***********
-      try {
-        const updatedUser = await axios.put(`http://localhost:8080/create/update/${newUser.id}`, newUser);
-        setUsers(
-          users.map((user) =>
-            user.id === editingId ? updatedUser.data : user
-          )
-        );
-        setEditingId(null);
-        setNewUser({ name: "", email: "", role: "", password: "", phone: "", id: null });
-      } catch (error) {
-        console.error("There was an error updating the user!", error);
+    const authToken = localStorage.getItem("token");
+    const id = localStorage.getItem("id");
+
+    if (newUser.name && newUser.email && newUser.phone && newUser.role) { 
+        try {
+            const updatedData = {
+                Name: newUser.name,
+                Email: newUser.email,
+                Phone: newUser.phone,
+                Role: newUser.role
+            };
+
+            const response = await axios.put(
+                `http://localhost:8080/create/updatebyadmin/${newUser.id}`,
+                updatedData,
+                { 
+                    headers: {
+                        "Authorization": `Bearer ${authToken}`,
+                        "Content-Type": "application/json", 
+                    }
+                }
+            );
+
+            const updatedUser = response.data;
+
+            setUsers((prevUsers) => 
+              prevUsers.map((user) => user.id === newUser.id ? updatedUser : user)
+          );
+
+            setEditingId(null);
+            setNewUser({ name: "", email: "", role: "", phone: "", id: null });
+            toast.success("User updated successfully!");
+        } catch (error) {
+          toast.error(`Error updating user: ${error.response?.data?.message || "Something went wrong!"}`);
       }
-    } else {
-      alert("Please fill in all fields."); // *********** Added alert for incomplete data ***********
-    }
-  };
+  } else {
+      toast.warn("Please fill in all fields.");
+  }
+};
+
+
 
   const filteredUsers = users.filter((user) => {
     const name = user.name || "";
@@ -81,14 +120,14 @@ function UserManagement() {
               type="text"
               className="form-control"
               placeholder="name"
-              value={newUser.name || ""} // ****** Ensured controlled component behavior ********
+              value={newUser.name || ""} 
               onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
             />
             <input
               type="email"
               className="form-control"
               placeholder="Email"
-              value={newUser.email || ""} // ****** Ensured controlled component behavior ********
+              value={newUser.email || ""} 
               onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
               disabled
             />
@@ -103,12 +142,12 @@ function UserManagement() {
               type="phone"
               className="form-control"
               placeholder="Phone"
-              value={newUser.phone || ""} // ****** Ensured controlled component behavior ********
+              value={newUser.phone || ""} 
               onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })}
             />
             <select
               className="form-control"
-              value={newUser.role || ""} // ****** Ensured controlled component behavior ********
+              value={newUser.role || ""} 
               onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
             >
               <option value="">Select Role</option>

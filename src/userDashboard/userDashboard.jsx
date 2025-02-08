@@ -38,11 +38,17 @@ const UserDashboard = () => {
   }, []);
 
   const fetchDocuments = async () => {
+    const authToken = localStorage.getItem("token");
+    if (!authToken) {
+      alert("You are not authorized. Please log in again.");
+      return;
+    }
     try {
       const response = await axios.get(
         `http://localhost:8080/api/document/getAllDocument`,
         {
-          params: { uploadedBy: name, uploaderEmail: useremail }, // Replace with dynamic user info if available
+          params: { uploadedBy: name, uploaderEmail: useremail },
+          headers: { Authorization: `Bearer ${authToken}` },
         }
       );
       console.log(response.data);
@@ -95,10 +101,13 @@ const UserDashboard = () => {
     formData.append("uploadedBy", name);
     formData.append("uploaderEmail", useremail);
 
-
-    try {
+    const authToken = localStorage.getItem("token");
+     try {
       await axios.post("http://localhost:8080/api/document/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${authToken}`
+        },
       });
       fetchDocuments(); // Refresh documents after upload
       alert("File uploaded successfully!");
@@ -112,6 +121,11 @@ const UserDashboard = () => {
 
   // Preview file
   const handlePreview = async (doc) => {
+    const authToken = localStorage.getItem("token");
+    if (!authToken) {
+      alert("You are not authorized. Please log in again.");
+      return;
+        }
     try {
         const fileUrl = `http://localhost:8080/api/document/download/${doc.id}`;
         const previewWindow = window.open("", "_blank");
@@ -123,17 +137,32 @@ const UserDashboard = () => {
 
         previewWindow.document.write(`<h1>${doc.name}</h1>`);
 
+         // Added Authorization header in the fetch request
+         const response = await fetch(fileUrl, {
+          method: "GET",
+          headers: { 
+              "Authorization": `Bearer ${authToken}` // Sending JWT token
+          }
+      });
+
+      if (!response.ok) { 
+        throw new Error(`Failed to fetch file: ${response.statusText}`);
+    }
+
         if (doc.type === "text/plain") {
-            const response = await fetch(fileUrl);
             const text = await response.text();
             previewWindow.document.write(`<pre>${text}</pre>`);
         } else if (doc.type === "application/pdf") {
-            previewWindow.document.write(
-                `<embed src="${fileUrl}" width="100%" height="600px" type="application/pdf" />`
+          const blob = await response.blob();  
+          const blobUrl = URL.createObjectURL(blob);
+          previewWindow.document.write(
+                `<embed src="${blobUrl}" width="100%" height="600px" type="application/pdf" />`
             );
         } else if (doc.type.startsWith("image/")) {
+          const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
             previewWindow.document.write(
-                `<img src="${fileUrl}" alt="${doc.name}" width="50%" height="auto"/>`
+                `<img src="${blobUrl}" alt="${doc.name}" width="50%" height="auto"/>`
             );
         } 
         // Check for Word and Excel file types
@@ -143,9 +172,11 @@ const UserDashboard = () => {
             doc.type === "application/vnd.ms-excel" || // .xls
             doc.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" // .xlsx
         ) {
+          const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
             previewWindow.document.write(`
                 <p>Preview is not available for this file type. You can download the document using the link below:</p>
-                <a href="${fileUrl}" download="${doc.name}" style="padding:10px; background:#007BFF; color:white; text-decoration:none; border-radius:5px;">Download File</a>
+                <a href="${blobUrl}" download="${doc.name}" style="padding:10px; background:#007BFF; color:white; text-decoration:none; border-radius:5px;">Download File</a>
             `);
         } else {
             previewWindow.document.write("<p>Preview not available for this file type.</p>");
@@ -245,6 +276,33 @@ const UserDashboard = () => {
     setEmailError(emailRegex.test(value) ? "" : "Invalid email address");
   };
 
+  //delete document
+  const deleteDocument = async (docId) => {
+    const authToken = localStorage.getItem("token");
+    if (!authToken) {
+      alert("You are not authorized. Please log in again.");
+      return;
+    }
+  
+    const confirmDelete = window.confirm("Are you sure you want to delete this document?");
+    if (!confirmDelete) return;
+  
+    try {
+      await axios.delete(`http://localhost:8080/api/document/deleteDocument/${docId}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+  
+      // Remove the deleted document from state
+      setDocuments((prevDocuments) => prevDocuments.filter((doc) => doc.id !== docId));
+  
+      alert("Document deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting document:", error);
+      alert("Failed to delete document. Please try again.");
+    }
+  };
+  
+
   const handleShareDocument = async () => {
     if (!email || emailError) {
       alert("Please enter a valid email address.");
@@ -254,6 +312,7 @@ const UserDashboard = () => {
       setOpen(false); // Close the popup
     };
 
+    const authToken = localStorage.getItem("token");
     try {
       // Call the API to share the document
       await axios.post(`http://localhost:8080/api/document/share`, {
@@ -262,6 +321,10 @@ const UserDashboard = () => {
         documentName: selectedDocumentName,
         sharedBy: name,
         sharedAt: "2024-12-08T10:00:00"
+      }, {
+        headers: { 
+        "Authorization": `Bearer ${authToken}` },
+        "contentType": "application/json"
       });
       alert("Document shared successfully!");
       handleCloseSharePopup();

@@ -20,8 +20,15 @@ function DocumentManagement() {
 
   useEffect(() => {
     const fetchDocuments = async () => {
+      const authtoken = localStorage.getItem("token");
       try {
-        const response = await axios.get("http://localhost:8080/api/document");
+        const response = await axios.get("http://localhost:8080/api/document",
+          {
+            headers: {
+              "Authorization": `Bearer ${authtoken}`,
+            },
+          }
+        );
         setDocuments(response.data);
       } catch (err) {
         setError("Failed to fetch documents");
@@ -36,8 +43,17 @@ function DocumentManagement() {
 
   
   const handleCreateDocument = async () => {
+    const authtoken = localStorage.getItem("token");
     try {
-      const response = await axios.post("http://localhost:8080/api/document", newDocument);
+      const response = await axios.post("http://localhost:8080/api/document", 
+      newDocument,
+      {
+        headers: {
+          "Authorization": `Bearer ${authtoken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
       setDocuments([...documents, response.data]);
       setNewDocument({ title: "", description: "" });
     } catch (err) {
@@ -56,10 +72,16 @@ function DocumentManagement() {
   const handleSaveEdit = async (e) => {
     e.preventDefault(); 
 
+    const authtoken = localStorage.getItem("token");
     try {
       const response = await axios.put(
         `http://localhost:8080/api/document/${editedDocument.id}`,
-        editedDocument
+        editedDocument,
+        {
+          headers: {
+            "Authorization": `Bearer ${authtoken}`,
+        }
+      }
       );
 
      
@@ -77,9 +99,16 @@ function DocumentManagement() {
 
   
   const handleDeleteDocument = async (index) => {
+    const authtoken = localStorage.getItem("token");
     try {
       const documentToDelete = documents[index];
-      await axios.delete(`http://localhost:8080/api/document/deleteDocument/${documentToDelete.id}`);
+      await axios.delete(`http://localhost:8080/api/document/deleteDocument/${documentToDelete.id}`,
+        {
+          headers:{
+            "Authorization": `Bearer ${authtoken}`,
+          }
+        }
+      );
       const updatedDocuments = documents.filter((_, i) => i !== index);
       setDocuments(updatedDocuments);
     } catch (err) {
