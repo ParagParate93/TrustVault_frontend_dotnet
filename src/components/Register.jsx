@@ -174,7 +174,7 @@ const Register = () => {
             value={formData.phone}
             onChange={handleChange}
             required
-            pattern="(\+?\d{1,4}[\s-]?)?(\(?\d{1,4}\)?[\s-]?)?[\d-]{5,20}" 
+            pattern="\+?[0-9]{1,4}[\s\-]?\(?[0-9]{1,4}\)?[\s\-]?[0-9]{5,15}"
             title="Please enter a valid phone number"
           />
           {errors.phone && <p className="error">{errors.phone}</p>}

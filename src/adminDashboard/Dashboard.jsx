@@ -2,12 +2,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./AdminDashboard.css";
-import NavigationBar2 from "../components/NavigationBar2";
+import NavigationBar3 from "../components/NavigationBar3";
 
 function Dashboard() {
   return (
     <div className="user-dashboard-container">
-      <NavigationBar2 />
+      <NavigationBar3 />
     <div className="dashboard-container">
       <h2 className="dashboard-title">Welcome to Admin Dashboard</h2>
 

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles.css";
-import NavigationBar2 from "../components/NavigationBar2";
+import NavigationBar3 from "../components/NavigationBar3";
 
 function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -39,10 +39,14 @@ function UserManagement() {
     setNewUser({ name: user.name || "", email: user.email || "", password: user.password || "", phone: user.phone || "", role: user.role || "", id: user.id });
   };
 
+  const token = localStorage.getItem("token");
+
   const handleUpdateUser = async () => {
     if (newUser.name && newUser.email && newUser.password && newUser.phone && newUser.role) { // *********** Added validation ***********
       try {
-        const updatedUser = await axios.put(`http://localhost:8080/create/update/${newUser.id}`, newUser);
+        const updatedUser = await axios.put(`http://localhost:8080/create/update/${newUser.id}`, 
+        newUser,
+        {headers:{Authorization: `Bearer ${token}`}});
         setUsers(
           users.map((user) =>
             user.id === editingId ? updatedUser.data : user
@@ -71,7 +75,7 @@ function UserManagement() {
 
   return (
     <div className="user-dashboard-container">
-      <NavigationBar2 />
+      <NavigationBar3 />
       <div className="container">
         <h2>User Management</h2>
 

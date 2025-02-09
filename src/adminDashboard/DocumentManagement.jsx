@@ -1,9 +1,7 @@
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles.css";
-import NavigationBar2 from "../components/NavigationBar2";
+import NavigationBar3 from "../components/NavigationBar3";
 
 function DocumentManagement() {
   const [documents, setDocuments] = useState([]);
@@ -99,7 +97,7 @@ function DocumentManagement() {
   
   return (
     <div className="user-dashboard-container">
-      <NavigationBar2 />
+      <NavigationBar3 />
     <div className="container">
       <h2>Document Management</h2>
 

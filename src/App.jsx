@@ -21,6 +21,7 @@ import NavigationBar2 from "./components/NavigationBar2.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
 import PrivacyPolicy from "./pages/privacypolicy.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import NavigationBar3 from "./components/NavigationBar3.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const withNavBar = (Component) => (
@@ -54,10 +55,10 @@ const App = () => {
         <Route path="/DocumentManagement"element={<><DocumentManagement /> </>}     />
         <Route path="/UserManagement"element={<> <UserManagement/> </>}     />
         <Route path="/AdminDashboard"element={<> <Dashboard/> </>}     />
-        <Route path="/NavigationBar2"element={<><NavigationBar2/> </>} />     
+        <Route path="/NavigationBar2"element={<><NavigationBar2/> </>} />
+        <Route path="/NavigationBar3"element={<><NavigationBar3/> </>} />      
         <Route path="/ProfilePage"element={<><ProfilePage/> </>}     />
         </Route>
-
       </Routes>
       
     </Router>
