@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./styles.css";
-import NavigationBar2 from "../components/NavigationBar2";
+import NavigationBar3 from "../components/NavigationBar3";
 import { toast } from "react-toastify";
+
 
 function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -53,6 +54,8 @@ function UserManagement() {
     setEditingId(id);
     setNewUser({ name: user.name || "", email: user.email || "", password: user.password || "", phone: user.phone || "", role: user.role || "", id: user.id });
   };
+
+  const token = localStorage.getItem("token");
 
   const handleUpdateUser = async () => {
     const authToken = localStorage.getItem("token");
@@ -110,7 +113,7 @@ function UserManagement() {
 
   return (
     <div className="user-dashboard-container">
-      <NavigationBar2 />
+      <NavigationBar3 />
       <div className="container">
         <h2>User Management</h2>
 

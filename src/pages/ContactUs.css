@@ -153,3 +153,10 @@
     width: 100%;
   }
 }
+
+.loader-image {
+  width: 50px;
+  height: 50px;
+  margin: 20px auto;
+  display: block;
+}

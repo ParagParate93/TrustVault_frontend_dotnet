@@ -17,6 +17,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const UserDashboard = () => {
   const [documents, setDocuments] = useState([]);
@@ -27,11 +28,11 @@ const UserDashboard = () => {
   const [selectedDocumentId, setSelectedDocumentId] = useState(null);
   const [emailError, setEmailError] = useState("");
   const [selectedDocumentName, setSelectedDocumentName] = useState("");
-  //  var name = "Ashwini Patil";
-  //  var useremail = "patilash8698@gmail.com";
-  // Fetch documents from the database on component mount
-  var name = localStorage.getItem('name');
-  var useremail = localStorage.getItem('email');
+  const [isSharing, setIsSharing] = useState(false);
+
+  // Get user information from localStorage
+  const name = localStorage.getItem("name");
+  const useremail = localStorage.getItem("email");
 
   useEffect(() => {
     fetchDocuments();
@@ -49,6 +50,7 @@ const UserDashboard = () => {
         {
           params: { uploadedBy: name, uploaderEmail: useremail },
           headers: { Authorization: `Bearer ${authToken}` },
+
         }
       );
       console.log(response.data);
@@ -61,23 +63,24 @@ const UserDashboard = () => {
 
   const formatFileType = (mimeType) => {
     const fileTypeMap = {
-        "application/pdf": "PDF",
-        "application/msword": "DOC",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "DOCX",
-        "application/vnd.ms-excel": "XLS",
-        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "XLSX",
-        "text/plain": "TXT",
-        "image/png": "PNG",
-        "image/jpeg": "JPG",
-        "image/jpg": "JPG",
-        "image/gif": "GIF",
-        "image/svg+xml": "SVG",
-        "application/zip": "ZIP",
-        "application/x-rar-compressed": "RAR"
+      "application/pdf": "PDF",
+      "application/msword": "DOC",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "DOCX",
+      "application/vnd.ms-excel": "XLS",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "XLSX",
+      "text/plain": "TXT",
+      "image/png": "PNG",
+      "image/jpeg": "JPG",
+      "image/jpg": "JPG",
+      "image/gif": "GIF",
+      "image/svg+xml": "SVG",
+      "application/zip": "ZIP",
+      "application/x-rar-compressed": "RAR",
     };
-    
-    return fileTypeMap[mimeType] || mimeType.toUpperCase();  // Default fallback
-};
+
+    return fileTypeMap[mimeType] || mimeType.toUpperCase();
+  };
+
   // Handle file upload
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
@@ -127,13 +130,13 @@ const UserDashboard = () => {
       return;
         }
     try {
-        const fileUrl = `http://localhost:8080/api/document/download/${doc.id}`;
-        const previewWindow = window.open("", "_blank");
+      const fileUrl = `http://localhost:8080/api/document/download/${doc.id}`;
+      const previewWindow = window.open("", "_blank");
 
-        if (!previewWindow) {
-            alert("Please allow pop-ups to preview the document.");
-            return;
-        }
+      if (!previewWindow) {
+        alert("Please allow pop-ups to preview the document.");
+        return;
+      }
 
         previewWindow.document.write(`<h1>${doc.name}</h1>`);
 
@@ -182,23 +185,20 @@ const UserDashboard = () => {
             previewWindow.document.write("<p>Preview not available for this file type.</p>");
         }
     } catch (error) {
-        console.error("Error previewing file:", error);
-        alert("Failed to preview file.");
+      console.error("Error previewing file:", error);
+      alert("Failed to preview file.");
     }
-};
-
+  };
 
   // Toggle sort order
   const toggleSortOrder = () => {
     const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
     const sortedDocuments = [...documents].sort((a, b) => {
-      // Parse dates properly
-      const dateA = new Date(a.uploadedAt);  // Assuming 'uploadedAt' is the date field
+      const dateA = new Date(a.uploadedAt);
       const dateB = new Date(b.uploadedAt);
 
-      // Ensure the dates are valid
       if (isNaN(dateA) || isNaN(dateB)) {
-        return 0; // Return 0 to avoid sorting if date is invalid
+        return 0;
       }
 
       return newSortOrder === "asc" ? dateA - dateB : dateB - dateA;
@@ -231,14 +231,12 @@ const UserDashboard = () => {
   const formatDate = (dateString) => {
     if (!dateString) {
       console.error("Invalid or missing date:", dateString);
-      return "Invalid Date";  // Return a fallback value for invalid dates
+      return "Invalid Date";
     }
 
-    // If the date string contains a microsecond and timezone, we remove it
-    const sanitizedDate = dateString.split(".")[0];  // Safely handle the split
+    const sanitizedDate = dateString.split(".")[0];
     const date = new Date(sanitizedDate);
 
-    // Check if date is valid
     if (isNaN(date)) {
       console.error("Invalid date format:", dateString);
       return "Invalid Date";
@@ -253,11 +251,9 @@ const UserDashboard = () => {
     return `${(sizeInBytes / (1024 * 1024)).toFixed(2)} MB`;
   };
 
-
-
   const handleOpenSharePopup = (docId, docName) => {
     setSelectedDocumentId(docId);
-    setSelectedDocumentName(docName); // Set the document name
+    setSelectedDocumentName(docName);
     setIsSharePopupOpen(true);
   };
 
@@ -314,7 +310,6 @@ const UserDashboard = () => {
 
     const authToken = localStorage.getItem("token");
     try {
-      // Call the API to share the document
       await axios.post(`http://localhost:8080/api/document/share`, {
         documentId: selectedDocumentId,
         sharedWith: email,
@@ -331,9 +326,29 @@ const UserDashboard = () => {
     } catch (error) {
       console.error("Error sharing document:", error);
       alert("Failed to share document. Please try again.");
+    } finally {
+      setIsSharing(false);
     }
   };
 
+  const token = localStorage.getItem("token");
+  
+  // Delete document function for completeness
+  const deleteDocument = async (docId) => {
+    if (!window.confirm("Are you sure you want to delete this document?")) {
+      return;
+    }
+    try {
+      await axios.delete(`http://localhost:8080/api/document/delete/${docId}`,
+      {headers: { 'Authorization': `Bearer ${token}`}
+      });
+      alert("Document deleted successfully!");
+      fetchDocuments();
+    } catch (error) {
+      console.error("Error deleting document:", error);
+      alert("Failed to delete document. Please try again.");
+    }
+  };
 
   return (
     <div className="user-dashboard-container">
@@ -395,7 +410,8 @@ const UserDashboard = () => {
                     <td>{doc.name}</td>
                     <td>{formatDate(doc.uploadedAt)}</td>
                     <td>
-                      <FontAwesomeIcon icon={getFileIcon(doc.type)} /> {formatFileType(doc.type)}
+                      <FontAwesomeIcon icon={getFileIcon(doc.type)} />{" "}
+                      {formatFileType(doc.type)}
                     </td>
                     <td>{formatFileSize(doc.size)}</td>
                     <td>
@@ -405,23 +421,24 @@ const UserDashboard = () => {
                       >
                         Preview
                       </button>
-                      {/* Conditionally render the Delete button */}
+                      {/* Conditionally render Delete and Share buttons */}
                       {!doc.isShared && (
-                        <button
-                          className="delete-button"
-                          onClick={() => deleteDocument(doc.id)}
-                        >
-                          Delete
-                        </button>
-                      )}
-                      {/* Conditionally render the Share button */}
-                      {!doc.isShared && (
-                        <button
-                          className="share-button"
-                          onClick={() => handleOpenSharePopup(doc.id, doc.name)}
-                        >
-                          Share
-                        </button>
+                        <>
+                          <button
+                            className="delete-button"
+                            onClick={() => deleteDocument(doc.id)}
+                          >
+                            Delete
+                          </button>
+                          <button
+                            className="share-button"
+                            onClick={() =>
+                              handleOpenSharePopup(doc.id, doc.name)
+                            }
+                          >
+                            Share
+                          </button>
+                        </>
                       )}
                     </td>
                   </tr>
@@ -431,7 +448,6 @@ const UserDashboard = () => {
           )}
         </section>
       </main>
-
 
       <Dialog
         open={isSharePopupOpen}
@@ -448,11 +464,12 @@ const UserDashboard = () => {
           <div className="popup-header">Share Document</div>
         </DialogTitle>
         <DialogContent>
-          {/* Show the document name */}
           <h6>
             Sharing: <strong>{selectedDocumentName}</strong>
           </h6>
-          <h5 style={{ marginBottom: "12px", color: "black" }}>Enter email address to share this document</h5>
+          <h5 style={{ marginBottom: "12px", color: "black" }}>
+            Enter email address to share this document
+          </h5>
           <TextField
             label="Recipient's Email"
             type="email"
@@ -470,15 +487,18 @@ const UserDashboard = () => {
           <Button
             onClick={handleShareDocument}
             className="popup-share-button"
-            disabled={!!emailError}
+            disabled={!!emailError || isSharing}
           >
-            Share
+            {isSharing ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Share"
+            )}
           </Button>
         </DialogActions>
       </Dialog>
-
     </div>
-  )
-}
+  );
+};
 
 export default UserDashboard;

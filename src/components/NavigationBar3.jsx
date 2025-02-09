@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "./NavigationBar2.css";
+import "./NavigationBar3.css";
 
 const NavigationBar2 = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -36,7 +36,7 @@ const NavigationBar2 = () => {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <Link to="/userDashboard">TrustVault</Link>
+        <Link to="/AdminDashboard">TrustVault</Link>
       </div>
       <ul className="navbar-links">
         {!isLoggedIn ? (
@@ -56,7 +56,7 @@ const NavigationBar2 = () => {
                 <div className="dropdown-menu">
                   <p style={{ margin: "15px" }}>{userEmail}</p>
                   <Link to="/ProfilePage">
-                    <button className="dropdown-item">User Profile</button>
+                    <button className="dropdown-item">Admin Profile</button>
                   </Link>
                   <button className="dropdown-item" onClick={handleLogout}>
                     Logout

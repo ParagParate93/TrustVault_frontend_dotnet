@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify"; // +++++++++++++
+import "react-toastify/dist/ReactToastify.css"; // +++++++++++++
 import "./ContactUs.css";
 import NavigationBar from "../components/NavigationBar";
+import loaderImage from "../../public/loader.gif"; // +++++++++++++ (Make sure to have an image like loader.gif)
 
 const FancyContactUs = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +13,7 @@ const FancyContactUs = () => {
   });
 
   const [showContactInfo, setShowContactInfo] = useState(false);
-  const [statusMessage, setStatusMessage] = useState(""); // For feedback to the user
+  const [loading, setLoading] = useState(false); // +++++++++++++
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,45 +22,44 @@ const FancyContactUs = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // +++++++++++++ Show Loader
 
-    // Create an object to send to the backend
     const dataToSend = {
       name: formData.name,
       email: formData.email,
       message: formData.message,
-      submittedAt: new Date().toISOString(), // Submitted at current date and time
+      submittedAt: new Date().toISOString(),
     };
 
-    try {//http://localhost:8080/ContactUs/SubmitContactForm
-      // Make a POST request to the backend API
+    try {
       const response = await fetch("http://localhost:8080/contactus/submitcontactform", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(dataToSend), // Convert form data to JSON
+        body: JSON.stringify(dataToSend),
       });
 
       if (response.ok) {
         const responseData = await response.json();
-        setStatusMessage("Your message has been submitted successfully!"); // Success message
-        setFormData({
-          name: "",
-          email: "",
-          message: "",
-        });
+        toast.success("Your message has been submitted successfully! 🎉"); // +++++++++++++
+        setFormData({ name: "", email: "", message: "" });
       } else {
-        setStatusMessage("Failed to submit your message. Please try again.");
+        toast.error("Failed to submit your message. Please try again."); // +++++++++++++
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      setStatusMessage("There was an error with the submission. Please try again.");
+      toast.error("There was an error with the submission. Please try again."); // +++++++++++++
+    } finally {
+      setLoading(false); // +++++++++++++ Hide Loader
     }
   };
 
   return (
     <>
       <NavigationBar />
+      <ToastContainer position="top-right" autoClose={3000} /> {/* +++++++++++++ */}
+      
       <div className="fancy-contact-us-container">
         <h1 style={{ fontFamily: 'FancyFont', fontSize: '2em', color: 'lightgreen' }}>
           We'd Love to Hear from You
@@ -66,13 +68,14 @@ const FancyContactUs = () => {
           Drop us a message and we’ll get back to you soon!
         </p>
 
-        {statusMessage && (
-          <p style={{ color: 'lightgreen', fontStyle: 'italic' }}>
-            {statusMessage}
-          </p>
-        )} {/* Status Message */}
-
         <div className="fancy-form-container">
+          {/* +++++++++++++ Image loader while loading */}
+          {loading && (
+            <div className="loading-container">
+              <img src={loaderImage} alt="Loading..." className="loader-image" />
+            </div>
+          )}
+
           <form onSubmit={handleSubmit}>
             <div className="fancy-form-field">
               <input
@@ -118,8 +121,10 @@ const FancyContactUs = () => {
                 Your Message
               </label>
             </div>
-            <button type="submit" className="fancy-submit-button">
-              Send Message
+
+            {/* Loader +++++++++++++ */}
+            <button type="submit" className="fancy-submit-button" disabled={loading}>
+              {loading ? "Sending..." : "Send Message"} {/* Change button text */}
             </button>
           </form>
         </div>

@@ -24,7 +24,7 @@ const AboutUs = () => {
             <p>Parag Parate</p>
           </div>
           <div className="team-member">
-            <img src="../../public/Rohit_owal.jpg" alt="Team Member" />
+            <img src="../../Rohit_owal.jpg" alt="Team Member" />
             <p>Rohit Owal</p>
           </div>
           <div className="team-member">
