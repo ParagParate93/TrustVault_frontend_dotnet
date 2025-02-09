@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../Styles/Register.css";
-import { toast } from 'react-toastify';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,6 @@ const Register = () => {
     confirmPassword: "",
     phone: "",
     role: "ROLE_USER", // Role is now included here
-    
   });
 
   const [errors, setErrors] = useState({});
@@ -38,13 +38,12 @@ const Register = () => {
       return;
     }
 
-    // Prepare data for the backend, including role
     const userPayload = {
       name: formData.name,
       email: formData.email,
       password: formData.password,
       phone: formData.phone,
-      role: formData.role, // Role is included here
+      role: formData.role,
     };
 
     try {
@@ -57,23 +56,11 @@ const Register = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
         toast.success("Registration Successful!");
-
-        setFormData({
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-          phone: "",
-          role: "ROLE_USER", // Reset the role to default
-        });
-
         setTimeout(() => navigate("/login"), 1000);
-      } else if (response.status === 400) {
-        toast.error("User already exists or invalid data");
       } else {
-        toast.error("Something went wrong. Please try again.");
+        const errorMessage = await response.text();
+        toast.error(errorMessage || "Something went wrong. Please try again.");
       }
     } catch (error) {
       console.error("Error during registration:", error);
@@ -84,7 +71,6 @@ const Register = () => {
   const validateForm = (data) => {
     const errors = {};
 
-    // Email validation
     if (!data.email.trim()) {
       errors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(data.email)) {
@@ -97,14 +83,11 @@ const Register = () => {
       errors.password =
         "Password must be 5-20 characters long, contain at least one digit, one lowercase letter, and one special character (#, @, $, *).";
     }
-    
 
-    // Confirm Password validation
     if (data.confirmPassword !== data.password) {
       errors.confirmPassword = "Passwords do not match";
     }
 
-    // Phone validation (checking length of the phone number)
     if (!data.phone.trim()) {
       errors.phone = "Phone number is required";
     } else if (data.phone.length !== 10) {
@@ -175,8 +158,6 @@ const Register = () => {
             value={formData.phone}
             onChange={handleChange}
             required
-            pattern="\+?[0-9]{1,4}[\s\-]?\(?[0-9]{1,4}\)?[\s\-]?[0-9]{5,15}"
-            title="Please enter a valid phone number"
           />
           {errors.phone && <p className="error">{errors.phone}</p>}
         </div>
