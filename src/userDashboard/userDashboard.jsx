@@ -7,6 +7,8 @@ import {
   faSearch,
   faSort,
   faUpload,
+  faEllipsisV,faCheckCircle,faShareAlt,faShareSquare   
+
 } from "@fortawesome/free-solid-svg-icons";
 import "./UserDashboard.css";
 import NavigationBar2 from "../components/NavigationBar2";
@@ -17,8 +19,13 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+<<<<<<< Updated upstream
 import CircularProgress from "@mui/material/CircularProgress";
 
+=======
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+>>>>>>> Stashed changes
 const UserDashboard = () => {
   const [documents, setDocuments] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
@@ -28,14 +35,36 @@ const UserDashboard = () => {
   const [selectedDocumentId, setSelectedDocumentId] = useState(null);
   const [emailError, setEmailError] = useState("");
   const [selectedDocumentName, setSelectedDocumentName] = useState("");
+<<<<<<< Updated upstream
   const [isSharing, setIsSharing] = useState(false);
 
   // Get user information from localStorage
   const name = localStorage.getItem("name");
   const useremail = localStorage.getItem("email");
+=======
+  const [user, setUser] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [shareInfoDialogOpen, setShareInfoDialogOpen] = useState(false);
+  const [selectedDoc, setSelectedDoc] = useState(null);
+  const [sharedDocInfo, setSharedDocInfo] = useState(null);
+  const [isPremiumUser, setIsPremiumUser] = useState(false);
+  const [isUpgradePopupOpen, setIsUpgradePopupOpen] = useState(false)
+
+
+  //  var name = "Ashwini Patil";
+  //  var useremail = "patilash8698@gmail.com";
+  // Fetch documents from the database on component mount
+  var name = localStorage.getItem('name');
+  var useremail = localStorage.getItem('email');
+>>>>>>> Stashed changes
 
   useEffect(() => {
     fetchDocuments();
+  }, []);
+  useEffect(() => {
+    // Fetch isPremiumUser status from localStorage when component mounts
+    const premiumStatus = localStorage.getItem("isPremiumUser") === "true";
+    setIsPremiumUser(premiumStatus);
   }, []);
 
   const fetchDocuments = async () => {
@@ -59,6 +88,16 @@ const UserDashboard = () => {
       alert("Failed to fetch documents. Please try again later.");
     }
   };
+  const handleMenuClick = (e, doc) => {
+    setAnchorEl(e.currentTarget);  // Set the anchor to the clicked icon
+    setSelectedDoc(doc);  // Set the selected document
+  };
+  
+  const handleMenuClose = () => {
+    setAnchorEl(null);  // Close the menu by setting anchorEl to null
+    setSelectedDoc(null);  // Reset selectedDoc
+  };
+
 
   const formatFileType = (mimeType) => {
     const fileTypeMap = {
@@ -76,8 +115,21 @@ const UserDashboard = () => {
       "application/zip": "ZIP",
       "application/x-rar-compressed": "RAR",
     };
+<<<<<<< Updated upstream
 
     return fileTypeMap[mimeType] || mimeType.toUpperCase();
+=======
+    
+    return fileTypeMap[mimeType] || mimeType.toUpperCase();  // Default fallback
+};
+
+const handleUpgradeClose = () => setIsUpgradePopupOpen(false);
+
+  // Call the handlePayment function when user clicks upgrade button
+  const handleUpgradeClick = () => {
+    setIsUpgradePopupOpen(false); // Close the popup
+    handlePayment(); // Trigger the handlePayment function
+>>>>>>> Stashed changes
   };
 
   // Handle file upload
@@ -91,9 +143,11 @@ const UserDashboard = () => {
       event.target.value = "";
       return;
     }
+    const isPremiumUser = localStorage.getItem("isPremiumUser") === "true";
 
-    if (file.size > 2 * 1024 * 1024) {
-      alert("File size cannot be larger than 2MB!");
+    if (!isPremiumUser && file.size > 2 * 1024 * 1024) {
+      // Show upgrade popup if file size exceeds 2MB
+      setIsUpgradePopupOpen(true);
       event.target.value = "";
       return;
     }
@@ -120,6 +174,7 @@ const UserDashboard = () => {
 
     event.target.value = "";
   };
+ 
 
   // Preview file
   const handlePreview = async (doc) => {
@@ -187,7 +242,32 @@ const UserDashboard = () => {
       console.error("Error previewing file:", error);
       alert("Failed to preview file.");
     }
+<<<<<<< Updated upstream
   };
+=======
+};
+
+const handleDownload = async (docId) => {
+  const token = localStorage.getItem("token"); 
+  const fileUrl = `http://localhost:8080/api/document/download/${docId}`;
+  const headers = new Headers();
+  headers.append("Authorization", `Bearer ${token}`);
+
+  try {
+    const response = await fetch(fileUrl, { headers });
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = docId; // You can customize the filename here
+    
+    link.click();
+    window.URL.revokeObjectURL(url); // Clean up the URL object
+  } catch (error) {
+    console.error('Error downloading document:', error);
+  }
+};
+>>>>>>> Stashed changes
 
   // Toggle sort order
   const toggleSortOrder = () => {
@@ -330,7 +410,73 @@ const UserDashboard = () => {
       setIsSharing(false);
     }
   };
+  const handleViewShareInfo = (doc) => {
+    // Show sharing info dialog when document is shared
+    setSharedDocInfo({
+      sharedBy: doc.sharedBy,
+      sharedAt: doc.sharedAt,
+    });
+    setShareInfoDialogOpen(true);
+  };
 
+<<<<<<< Updated upstream
+=======
+  const handleCloseShareInfoDialog = () => {
+    setShareInfoDialogOpen(false);
+    setSharedDocInfo(null);
+  };
+  const handlePayment = async () => {
+    try {
+      const token = localStorage.getItem("token"); // Get auth token for backend
+  
+      // Call your backend to create an order
+      const response = await axios.post(
+        "http://localhost:8080/api/payment/createOrder",
+        { amount: 50000 }, // ₹500 in paise
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Attach JWT token for Spring Security
+          },
+        }
+      );
+  
+      if (!response.data.orderId) {
+        alert("Failed to create order");
+        return;
+      }
+  
+      // Razorpay options
+      const options = {
+        key: "rzp_test_u768hLGUYuYgrN", // Your Razorpay Test Key
+        amount: 500, // Amount in paise
+        currency: "INR",
+        name: "Trust Vault",
+        description: "Upgrade to Premium",
+        order_id: response.data.orderId, // Get from backend
+        handler: function (response) {
+          alert("Payment Successful: " + response.razorpay_payment_id);
+          localStorage.setItem("isPremiumUser", "true");
+        },
+        prefill: {
+          name: "Ashwini Patil",
+          email: "patilash8698@gmail.com",
+          contact: "9209261414",
+        },
+        theme: {
+          color: "#3399cc",
+        },
+      };
+  
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (error) {
+      console.error("Error in payment:", error);
+      alert("Payment failed! Check console for details.");
+    }
+  };
+
+>>>>>>> Stashed changes
   return (
     <div className="user-dashboard-container">
       <NavigationBar2 />
@@ -338,8 +484,9 @@ const UserDashboard = () => {
         <h1>User Dashboard</h1>
         <p>Manage your documents securely.</p>
       </header>
-
+  
       <main className="user-dashboard-main">
+        {/* Upload Section */}
         <section className="user-dashboard-upload-section">
           <label className="upload-button">
             <FontAwesomeIcon icon={faUpload} />
@@ -351,7 +498,8 @@ const UserDashboard = () => {
             />
           </label>
         </section>
-
+  
+        {/* Search and Sort Section */}
         <section className="user-dashboard-sort-search">
           <div className="search-sort-container">
             <button className="sort-button" onClick={toggleSortOrder}>
@@ -370,7 +518,8 @@ const UserDashboard = () => {
             </div>
           </div>
         </section>
-
+  
+        {/* File List Section */}
         <section className="user-dashboard-file-list">
           {filteredDocuments.length === 0 ? (
             <p>No documents available.</p>
@@ -388,7 +537,18 @@ const UserDashboard = () => {
               <tbody>
                 {filteredDocuments.map((doc) => (
                   <tr key={doc.id}>
-                    <td>{doc.name}</td>
+                    <td>
+                      {doc.name}
+                      {doc.isShared && (
+                        <FontAwesomeIcon
+                          icon={faShareSquare}
+                          className="shared-icon"
+                          title="Shared with you"
+                          style={{ marginLeft: '90px' }}
+                          onClick={() => handleViewShareInfo(doc)}
+                        />
+                      )}
+                    </td>
                     <td>{formatDate(doc.uploadedAt)}</td>
                     <td>
                       <FontAwesomeIcon icon={getFileIcon(doc.type)} />{" "}
@@ -396,10 +556,17 @@ const UserDashboard = () => {
                     </td>
                     <td>{formatFileSize(doc.size)}</td>
                     <td>
-                      <button
-                        className="preview-button"
-                        onClick={() => handlePreview(doc)}
+                      <FontAwesomeIcon
+                        icon={faEllipsisV}
+                        className="action-icon"
+                        onClick={(e) => handleMenuClick(e, doc)}
+                      />
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl) && selectedDoc === doc}
+                        onClose={handleMenuClose}
                       >
+<<<<<<< Updated upstream
                         Preview
                       </button>
                       {/* Conditionally render Delete and Share buttons */}
@@ -421,6 +588,16 @@ const UserDashboard = () => {
                           </button>
                         </>
                       )}
+=======
+                        <MenuItem onClick={() => handlePreview(doc)}>Preview</MenuItem>
+                        {/* Add the download option */}
+                        <MenuItem onClick={() => handleDownload(doc.id)}>Download</MenuItem>
+                        {!doc.shared && [
+                          <MenuItem key="share" onClick={() => handleOpenSharePopup(doc.id, doc.name)}>Share</MenuItem>,
+                          <MenuItem key="delete" onClick={() => deleteDocument(doc.id)}>Delete</MenuItem>
+                        ]}
+                      </Menu>
+>>>>>>> Stashed changes
                     </td>
                   </tr>
                 ))}
@@ -429,6 +606,7 @@ const UserDashboard = () => {
           )}
         </section>
       </main>
+<<<<<<< Updated upstream
 
       <Dialog
         open={isSharePopupOpen}
@@ -451,17 +629,25 @@ const UserDashboard = () => {
           <h5 style={{ marginBottom: "12px", color: "black" }}>
             Enter email address to share this document
           </h5>
+=======
+  
+      {/* Share Document Popup */}
+      <Dialog open={isSharePopupOpen} onClose={handleCloseSharePopup}>
+        <DialogTitle>Share Document</DialogTitle>
+        <DialogContent>
+>>>>>>> Stashed changes
           <TextField
-            label="Recipient's Email"
+            label="Email Address"
             type="email"
-            fullWidth
             value={email}
             onChange={handleEmailChange}
+            fullWidth
             error={!!emailError}
-            helperText={emailError || "Enter a valid email address"}
+            helperText={emailError}
           />
         </DialogContent>
         <DialogActions>
+<<<<<<< Updated upstream
           <Button onClick={handleCloseSharePopup} className="popup-cancel-button">
             Cancel
           </Button>
@@ -483,3 +669,41 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+=======
+          <Button onClick={handleCloseSharePopup}>Cancel</Button>
+          <Button onClick={handleShareDocument} color="primary">
+            Share
+          </Button>
+        </DialogActions>
+      </Dialog>
+  
+  
+      <Dialog open={isUpgradePopupOpen} onClose={handleUpgradeClose}>
+        <DialogTitle>Upgrade to Premium</DialogTitle>
+        <DialogContent>
+          <p>File size exceeds 2MB. Upgrade to Premium to upload larger files!</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleUpgradeClose}>Cancel</Button>
+          <Button onClick={handleUpgradeClick} color="primary">Upgrade to Premium</Button>
+        </DialogActions>
+      </Dialog>
+  
+  
+      {/* Share Document Info Dialog */}
+      <Dialog open={shareInfoDialogOpen} onClose={handleCloseShareInfoDialog}>
+        <DialogTitle>Shared Document Info</DialogTitle>
+        <DialogContent>
+          <p><strong>Shared By:</strong> {sharedDocInfo?.sharedBy}</p>
+          <p><strong>Shared At:</strong> {formatDate(sharedDocInfo?.sharedAt)}</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseShareInfoDialog}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+  };
+  
+  export default UserDashboard;
+>>>>>>> Stashed changes

@@ -328,3 +328,44 @@ color: white !important;
   justify-content: center;
   padding: 20px !important; /* Add padding for spacing */
 }
+
+
+.MuiMenuItem-root {
+  cursor: pointer; /* Add pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition for background change */
+}
+
+/* Add hover effect */
+.MuiMenuItem-root:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Light background on hover */
+}
+
+/* Style for the three-dot icon to make it clickable */
+.action-icon {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.action-icon:hover {
+  transform: scale(1.1); /* Slightly enlarge the icon on hover */
+}
+
+.shared-icon {
+  cursor: pointer;
+}
+
+.user-dashboard-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.logo-container {
+  margin-bottom: 20px; /* Adjust as needed */
+}
+
+.secure-share-logo {
+  max-width: 200px; /* Adjust size */
+  height: auto;
+}
