@@ -43,6 +43,7 @@ const Login = () => {
         setErrorMessage("");
         
         localStorage.setItem('token', response.data.response1.token);
+        localStorage.setItem('id', response.data.response1.id);
         localStorage.setItem('name', response.data.response1.name);
         localStorage.setItem('email', response.data.response1.email);
         localStorage.setItem('phone', response.data.response1.phone);

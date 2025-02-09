@@ -65,18 +65,15 @@ const ProfilePage = () => {
   // Validate input fields
   const validateField = (name, value) => {
     let errorMessage = '';
-    switch (name) {
+    switch (fieldName) {
       case 'name':
-        if (!value.match(nameRegex)) {
-          errorMessage = 'Name must only contain letters and spaces.';
-        }
+        if (!value.match(nameRegex)) errorMessage = 'Name must contain only letters and spaces.';
         break;
       case 'phone':
-        if (!value.match(phoneRegex)) {
-          errorMessage = 'Phone number must be between 10 and 15 digits.';
-        }
+        if (!value.match(phoneRegex)) errorMessage = 'Phone number must be between 10 and 15 digits.';
         break;
       case 'password':
+
         // Allow empty password if not changing
         if (value && !value.match(passwordRegex)) {
           const errorMessage = 'Password must be 6-20 characters and contain at least one letter, one number, and one special character.';
@@ -127,7 +124,7 @@ const ProfilePage = () => {
       setIsEditing(true);
     }
   };
-
+  
   return (
     <div className="user-dashboard-container">
       {role && (role === "ROLE_ADMIN" ? <NavigationBar3 /> : <NavigationBar2 />)}
@@ -174,7 +171,6 @@ const ProfilePage = () => {
                       name="name"
                       value={editedUser.name}
                       onChange={handleChange}
-                      placeholder="Enter your name"
                     />
                     {errors.name && <p className="error-message">{errors.name}</p>}
                   </>
